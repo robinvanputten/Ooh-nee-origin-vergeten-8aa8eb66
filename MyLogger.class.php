@@ -1,10 +1,10 @@
 <?php
 class MyLogger 
 {
-    public string $origin;
+    private string $origin;
 
-    public function __construct() {
-        $this->origin = "";
+    public function __construct($origin = '') {
+        $this->origin = $origin;
     }
 
     private function logWithTime($message) {
@@ -12,19 +12,19 @@ class MyLogger
     }
 
     public function warning($message) {
-        echo $this->logWithTime($this->origin . 'WARNING: ' . $message . PHP_EOL);
+        echo $this->logWithTime($this->displayOrigin() . 'WARNING: ' . $message . PHP_EOL);
     }	
 
     public function error($message) {
-        echo $this->logWithTime($this->origin . 'ERROR: ' . $message . PHP_EOL);
+        echo $this->logWithTime($this->displayOrigin() . 'ERROR: ' . $message . PHP_EOL);
     }
 
     public function debug($message) {
-        echo $this->logWithTime($this->origin . 'DEBUG: ' . $message . PHP_EOL);
+        echo $this->logWithTime($this->displayOrigin() . 'DEBUG: ' . $message . PHP_EOL);
     }
 
     public function info($message) {
-        echo $this->logWithTime($this->origin . 'INFO: ' . $message . PHP_EOL);
+        echo $this->logWithTime($this->displayOrigin() . 'INFO: ' . $message . PHP_EOL);
     }
 
     public function log($message, $loglevel = "") {
@@ -48,11 +48,16 @@ class MyLogger
     }
     
     public function setOrigin($orig) {
-        $this->origin = $orig . ' - ';
+        $this->origin = $orig;
+    }
+
+    public function displayOrigin() {
+        if ($this->origin) {
+            return $this->origin . ' - ';
+        }
     }
 }
 
-$logger = new MyLogger();
-$logger->setOrigin('TestClass');
+$logger = new MyLogger('test');
 $logger->error('dit is een error');
 ?>
